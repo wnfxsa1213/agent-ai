@@ -11,4 +11,14 @@ aiohttp>=3.8.4
 SQLAlchemy>=2.0.0
 faiss-cpu>=1.7.4
 numpy>=1.24.0
-tqdm>=4.65.0 
+tqdm>=4.65.0
+
+# 增强版写作助手依赖
+langchain>=0.1.0
+langchain-openai>=0.0.1
+langchain-community>=0.0.1
+langchain-text-splitters>=0.0.1
+langchain-core>=0.1.0
+chromadb>=0.4.18
+pypdf>=3.17.1
+docx2txt>=0.8 
