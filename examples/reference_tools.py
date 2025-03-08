@@ -15,6 +15,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from agent_framework import tool
+from agent_framework.config import ConfigManager
 
 # 第三方依赖，请确保已安装：
 # pip install langchain langchain-openai chromadb pypdf docx2txt tiktoken
@@ -26,6 +27,7 @@ try:
     from langchain_community.vectorstores import Chroma
     from langchain_community.document_transformers import Html2TextTransformer
     from langchain_core.documents import Document
+    from langchain_community.embeddings import HuggingFaceEmbeddings
     LANGCHAIN_AVAILABLE = True
 except ImportError:
     LANGCHAIN_AVAILABLE = False
@@ -36,6 +38,42 @@ except ImportError:
 DEFAULT_DB_PATH = "./reference_dbs"
 CHUNK_SIZE = 1000
 CHUNK_OVERLAP = 200
+
+
+def get_embeddings(embedding_type="openai", config=None):
+    """
+    根据配置创建嵌入对象
+    
+    Args:
+        embedding_type (str): 嵌入类型，"openai"或"local"
+        config (ConfigManager, optional): 配置管理器对象
+        
+    Returns:
+        Embeddings: 嵌入对象
+    """
+    if config is None:
+        config = ConfigManager()
+    
+    if embedding_type == "openai":
+        api_key = config.get("embeddings", "api_key", fallback="")
+        if not api_key:
+            api_key = os.environ.get("OPENAI_API_KEY", "")
+        
+        model = config.get("embeddings", "model", fallback="text-embedding-3-small")
+        
+        return OpenAIEmbeddings(
+            openai_api_key=api_key,
+            model=model
+        )
+    elif embedding_type == "local":
+        model_name = config.get("embeddings", "local_model", 
+                               fallback="shibing624/text2vec-base-chinese")
+        
+        return HuggingFaceEmbeddings(
+            model_name=model_name
+        )
+    else:
+        raise ValueError(f"不支持的嵌入类型: {embedding_type}")
 
 
 @tool(name="load_document", description="加载单个文档并构建向量数据库")
@@ -97,8 +135,12 @@ def load_document(file_path: str, db_name: str = None, chunk_size: int = CHUNK_S
         db_path = os.path.join(DEFAULT_DB_PATH, db_name)
         os.makedirs(db_path, exist_ok=True)
         
+        # 使用统一的嵌入获取函数
+        config = ConfigManager()
+        embedding_type = config.get("embeddings", "provider", fallback="openai")
+        embeddings = get_embeddings(embedding_type, config)
+        
         # 创建并保存向量数据库
-        embeddings = OpenAIEmbeddings()
         vector_db = Chroma.from_documents(
             documents=chunks,
             embedding=embeddings,
@@ -226,8 +268,12 @@ def load_documents(directory_path: str, db_name: str = "reference_collection",
     db_path = os.path.join(DEFAULT_DB_PATH, db_name)
     os.makedirs(db_path, exist_ok=True)
     
+    # 使用统一的嵌入获取函数
+    config = ConfigManager()
+    embedding_type = config.get("embeddings", "provider", fallback="openai")
+    embeddings = get_embeddings(embedding_type, config)
+    
     # 创建并保存向量数据库
-    embeddings = OpenAIEmbeddings()
     vector_db = Chroma.from_documents(
         documents=chunks,
         embedding=embeddings,
@@ -329,8 +375,12 @@ def semantic_search(query: str, db_name: str, limit: int = 5, min_relevance: flo
         return f"错误: 数据库'{db_name}'不存在，请先加载文档"
     
     try:
+        # 使用统一的嵌入获取函数
+        config = ConfigManager()
+        embedding_type = config.get("embeddings", "provider", fallback="openai")
+        embeddings = get_embeddings(embedding_type, config)
+        
         # 加载向量数据库
-        embeddings = OpenAIEmbeddings()
         vector_db = Chroma(
             persist_directory=db_path,
             embedding_function=embeddings
@@ -464,8 +514,12 @@ def reference_with_search(query: str, db_names: List[str] = None, limit_per_db: 
             continue
             
         try:
+            # 使用统一的嵌入获取函数
+            config = ConfigManager()
+            embedding_type = config.get("embeddings", "provider", fallback="openai")
+            embeddings = get_embeddings(embedding_type, config)
+            
             # 加载向量数据库
-            embeddings = OpenAIEmbeddings()
             vector_db = Chroma(
                 persist_directory=db_path,
                 embedding_function=embeddings

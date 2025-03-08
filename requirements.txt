@@ -1,24 +1,28 @@
-openai>=1.0.0
-anthropic>=0.5.0
-requests>=2.28.0
-python-dotenv>=1.0.0
-pydantic>=2.0.0
-colorlog>=6.7.0
-tenacity>=8.2.0
-tiktoken>=0.4.0
-jsonschema>=4.17.0
-aiohttp>=3.8.4
-SQLAlchemy>=2.0.0
-faiss-cpu>=1.7.4
-numpy>=1.24.0
-tqdm>=4.65.0
+# 核心依赖
+openai>=1.0.0,<2.0.0
+anthropic>=0.5.0,<0.6.0
+requests>=2.28.0,<3.0.0
+python-dotenv>=1.0.0,<2.0.0
+pydantic>=2.0.0,<3.0.0
+colorlog>=6.7.0,<7.0.0
+tenacity>=8.2.0,<9.0.0
+tiktoken>=0.4.0,<0.5.0
+jsonschema>=4.17.0,<5.0.0
+aiohttp>=3.8.4,<4.0.0
+SQLAlchemy>=2.0.0,<3.0.0
+tqdm>=4.65.0,<5.0.0
 
-# 增强版写作助手依赖
-langchain>=0.1.0
-langchain-openai>=0.0.1
-langchain-community>=0.0.1
-langchain-text-splitters>=0.0.1
-langchain-core>=0.1.0
-chromadb>=0.4.18
-pypdf>=3.17.1
-docx2txt>=0.8 
+# 向量数据库相关依赖
+langchain>=0.1.0,<0.2.0
+langchain-openai>=0.0.1,<0.1.0
+langchain-community>=0.0.1,<0.1.0
+langchain-text-splitters>=0.0.1,<0.1.0
+langchain-core>=0.1.0,<0.2.0
+chromadb>=0.4.18,<0.5.0
+pypdf>=3.17.1,<4.0.0
+docx2txt>=0.8,<0.9.0
+sentence-transformers>=2.2.2  # 用于本地嵌入模型
+
+# 可选依赖
+faiss-cpu>=1.7.4,<2.0.0  # 高效向量搜索库，可选用
+numpy>=1.24.0,<2.0.0 
