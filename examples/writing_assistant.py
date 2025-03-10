@@ -13,7 +13,8 @@ from pathlib import Path
 # 添加父目录到路径
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-from agent_framework import Agent, tool
+from agent_framework import Agent
+from agent_framework.models.tool import tool
 
 # 文章类型定义
 ARTICLE_TYPES = {
@@ -703,6 +704,8 @@ def save_article(title: str, content: str, format: str = "txt", folder: str = ""
         
         # 根据不同的格式处理内容
         if format == "html":
+            # 先处理内容替换，避免在f-string中使用反斜杠
+            content_html = content.replace('\n', '<br>')
             content = f"""<!DOCTYPE html>
 <html>
 <head>
@@ -715,7 +718,7 @@ def save_article(title: str, content: str, format: str = "txt", folder: str = ""
 </head>
 <body>
     <h1>{title}</h1>
-    {content.replace('\n', '<br>')}
+    {content_html}
 </body>
 </html>"""
         elif format == "md":

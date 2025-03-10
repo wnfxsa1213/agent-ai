@@ -41,7 +41,7 @@ class ConfigManager:
         """
         if os.path.exists(self.config_path):
             try:
-                self.config.read(self.config_path)
+                self.config.read(self.config_path, encoding='utf-8')
                 logger.info(f"已加载配置文件: {self.config_path}")
             except Exception as e:
                 logger.error(f"加载配置文件失败: {e}")
