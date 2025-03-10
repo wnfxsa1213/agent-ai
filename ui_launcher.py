@@ -43,6 +43,7 @@ def main():
         sys.executable, "-m", "streamlit", "run", ui_script,
         "--server.port", str(args.port),
         "--browser.serverAddress", "localhost",
+        "--server.headless", "true",  # 禁用Streamlit自动打开浏览器
         "--theme.base", "light"
     ]
     

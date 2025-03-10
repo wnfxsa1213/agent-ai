@@ -14,12 +14,12 @@ import re
 from openai import OpenAI
 from anthropic import Anthropic
 
-from agent_framework.core.config_manager import ConfigManager
-from agent_framework.models.message import Message, Role
-from agent_framework.models.tool import Tool
-from agent_framework.memory.memory_manager import MemoryManager
-from agent_framework.cache.cache_manager import CacheManager
-from agent_framework.utils.logger import setup_logger
+from core.config_manager import ConfigManager
+from models.message import Message, Role
+from models.tool import Tool
+from memory.memory_manager import MemoryManager
+from cache.cache_manager import CacheManager
+from utils.logger import setup_logger
 
 # 设置日志记录器
 logger = setup_logger(name="agent_framework.agent")

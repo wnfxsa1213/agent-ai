@@ -1,7 +1,7 @@
 """
-工具模块
+工具函数模块
 """
 
-from agent_framework.utils.logger import setup_logger
+from utils.logger import setup_logger
 
 __all__ = ['setup_logger'] 

@@ -10,7 +10,7 @@ import logging
 from datetime import datetime
 from collections import deque
 
-from agent_framework.models.message import Message
+from models.message import Message
 
 logger = logging.getLogger(__name__)
 

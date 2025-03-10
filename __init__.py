@@ -6,10 +6,10 @@
 __version__ = "0.1.0"
 
 # 导出主要的类和函数
-from agent_framework.core.agent import Agent
-from agent_framework.models.tool import Tool
-from agent_framework.models.message import Message, Role
-from agent_framework.core.config_manager import ConfigManager
+from core.agent import Agent
+from models.tool import Tool
+from models.message import Message, Role
+from core.config_manager import ConfigManager
 
 # 便捷函数
 def create_agent(name, description=None, model=None, tools=None):

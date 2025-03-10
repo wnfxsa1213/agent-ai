@@ -19,7 +19,7 @@ sys.path.insert(0, parent_dir)
 from core.config_manager import ConfigManager
 
 # 导入必要的库
-from langchain_community.vectorstores import Chroma
+from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
